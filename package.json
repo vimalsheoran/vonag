@@ -1,0 +1,21 @@
+{
+  "name": "vonag",
+  "version": "0.1.0-alpha1",
+  "description": "vonag is a simple cli tool to help you setup your node application using fastify",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "cli",
+    "setup",
+    "node",
+    "fastify",
+    "vonag"
+  ],
+  "author": "Vimal Sheoran",
+  "license": "ISC",
+  "bin": {
+    "vonag": "./main.js"
+  }
+}
