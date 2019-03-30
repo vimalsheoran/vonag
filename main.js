@@ -74,8 +74,20 @@ const run = async (optArg1, optArg2) => {
 				packageOpts["keywords"] = sanatizedKeywords;
 
 			}
+
 			await packageHelper
 				.initPackage(paramArg, appDir, packageOpts);
+
+			console.log("Created package.json!");
+			await packageHelper
+				.installVonagDependencies(appDir);
+
+			let userDeps = await menu.userDependenciesList();
+
+			let val = await packageHelper
+				.installUserDependencies(
+					appDir,
+					userDeps.dependencies.split(" "));
 			break;
 
 			case "api":
@@ -86,7 +98,7 @@ const run = async (optArg1, optArg2) => {
 			showHelpForMake();
 			break;
 		}
-
+		
 		return;
 
 	} else {
