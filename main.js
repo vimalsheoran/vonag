@@ -3,7 +3,8 @@
 const builder = require("./lib/builder");
 const exec = require("child_process").exec;
 const gitHelper = require("./lib/gitHelper");
-const menu = require("./lib/menu")
+const menu = require("./lib/menu");
+const packageHelper = require("./lib/packageHelper");
 
 // Command line helpers here
 
@@ -63,6 +64,18 @@ const run = async (optArg1, optArg2) => {
 				console.log("Skipping...");
 			}
 
+			console.log("Entering package setup...");
+			let packageOpts = await menu.packageInitOptions();
+			if (packageOpts["keywords"] == ""){
+				packageOpts["keywords"] = [];
+			} else {
+				let sanatizedKeywords = packageOpts["keywords"]
+					.split(" ");
+				packageOpts["keywords"] = sanatizedKeywords;
+
+			}
+			await packageHelper
+				.initPackage(paramArg, appDir, packageOpts);
 			break;
 
 			case "api":
