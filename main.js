@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const builder = require("./lib/builder");
-const exec = require("child_process").exec;
 const gitHelper = require("./lib/gitHelper");
 const menu = require("./lib/menu");
 const packageHelper = require("./lib/packageHelper");
@@ -56,7 +55,7 @@ const run = async (optArg1, optArg2) => {
 					setGitRemote.choice.toLowerCase() == "yes"){
 					let remoteUrl = await menu.getGitRemoteUrl();
 					await gitHelper
-						.addRemote(appDir, url);				
+						.addRemote(appDir, remoteUrl.url);				
 				} else {
 					console.log("Skipping...");
 				}

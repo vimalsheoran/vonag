@@ -19,6 +19,7 @@
     "vonag": "./main.js"
   },
   "dependencies": {
+    "await-exec": "^0.1.2",
     "inquirer": "^6.2.2"
   }
 }
