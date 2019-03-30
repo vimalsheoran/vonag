@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const builder = require("./lib/builder");
+const exec = require("await-exec");
+const fs = require("fs");
 const gitHelper = require("./lib/gitHelper");
 const menu = require("./lib/menu");
 const packageHelper = require("./lib/packageHelper");
@@ -36,6 +38,11 @@ const run = async (optArg1, optArg2) => {
 		switch (optArg2){
 
 			case "app":
+			if (!paramArg ||
+				paramArg == ""){
+				showHelpForMake();
+				break;
+			}
 			console.log("Setting up scaffolds...");
 			let appDir = await builder
 				.initAppStructure(paramArg);
@@ -89,8 +96,38 @@ const run = async (optArg1, optArg2) => {
 					userDeps.dependencies.split(" "));
 			break;
 
-			case "api":
-			console.log("Feature in progress, come back when it's ready");
+			case "component":
+			
+			if (!paramArg ||
+				paramArg == ""){
+				showHelpForMake();
+				break;
+			}
+
+			try {
+				
+				let unparsedMeta = fs
+					.readFileSync("package.json");
+				let appMeta = JSON.parse(unparsedMeta);
+
+				if (!appMeta["vonagApp"] ||
+					!(appMeta["vonagApp"] == "true"))
+					throw new Error();
+
+				let componentDir = process.cwd() + "/components/" + `${paramArg}`;
+
+				await exec(
+					`mkdir ${componentDir} &&
+					cd ${componentDir} &&
+					touch ${paramArg}.controller.js &&
+					touch ${paramArg}.routes.js &&
+					touch ${paramArg}.models.js`);
+
+			} catch(err){
+				console.log("Invalid operation, Not inside a vonag application");
+				break;
+			}	
+
 			break;
 
 			default:
