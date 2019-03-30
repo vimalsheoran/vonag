@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const builder = require("./app_builder/builder");
+const builder = require("./lib/builder");
 const exec = require("child_process").exec;
-const gitHelper = require("./app_builder/gitHelper");
-const readLine = require("readline");
+const gitHelper = require("./lib/gitHelper");
+const menu = require("./lib/menu")
 
 // Command line helpers here
 
@@ -29,55 +29,57 @@ if (optArg1 == "--help" ||
 	process.exit(0);
 }
 
-if (optArg1 == "make"){
+const run = async (optArg1, optArg2) => {
 
-	switch (optArg2){
+	if (optArg1 == "make"){
 
-		case "app":
-		console.log("Setting up scaffolds...");
-		builder
-			.initAppStructure(paramArg)
-			.then(async(appDir) => {
-				console.log(
-					`Generated application structure at ${appDir}`);
-				return appDir;})
-			.then(async(appDir) => {
-				console.log("Do you want to initialize a git repo? y/n");
-				let choice = readLine().toLowerCase();
-				if (choice == "y" ||
-					choice == "yes"){
-					gitHelper
-						.initGitRepo(appDir)
-						.then(() => {
-							console.log("Do you want to add a remote repository? y/n");
-							choice = readLine().toLowerCase();
-							if (choice == "y" ||
-								choice == "yes"){
-								console.log("Add your remote url: ");
-								let url = readLine();
-								gitHelper
-									.addRemote(
-										appDir,
-										url);
-								return;
-							}
-						})
+		switch (optArg2){
+
+			case "app":
+			console.log("Setting up scaffolds...");
+			let appDir = await builder
+				.initAppStructure(paramArg);
+			console.log(`Generated application at ${appDir}`);
+
+			let initGit = await menu.basicGitSetupPrompt();
+
+			if (initGit.choice.toLowerCase() == "y" ||
+				initGit.choice.toLowerCase() == "yes"){
+				await gitHelper
+					.initGitRepo(appDir);
+				console.log("Successfully initialised a git repository!");
+
+				let setGitRemote = await menu.gitRemoteSetupPrompt();
+
+				if (setGitRemote.choice.toLowerCase() == "y" ||
+					setGitRemote.choice.toLowerCase() == "yes"){
+					let remoteUrl = await menu.getGitRemoteUrl();
+					await gitHelper
+						.addRemote(appDir, url);				
+				} else {
+					console.log("Skipping...");
 				}
-				return appDir;
-			})
+			} else {
+				console.log("Skipping...");
+			}
 
+			break;
 
-		break;
+			case "api":
+			console.log("Feature in progress, come back when it's ready");
+			break;
 
-		case "api":
-		console.log("Feature in progress, come back when it's ready");
-		break;
+			default:
+			showHelpForMake();
+			break;
+		}
 
-		default:
+		return;
+
+	} else {
 		showHelpForMake();
-		break;
+		return;
 	}
-
-} else {
-	showHelpForMake();
 }
+
+run(optArg1, optArg2);
