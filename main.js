@@ -126,7 +126,7 @@ const run = async (optArg1, optArg2) => {
 			} catch(err){
 				console.log("Invalid operation, Not inside a vonag application");
 				break;
-			}	
+			}
 
 			break;
 
