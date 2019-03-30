@@ -17,5 +17,8 @@
   "license": "ISC",
   "bin": {
     "vonag": "./main.js"
+  },
+  "dependencies": {
+    "inquirer": "^6.2.2"
   }
 }
