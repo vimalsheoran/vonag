@@ -96,6 +96,10 @@ const run = async (optArg1, optArg2) => {
 					.installUserDependencies(
 						appDir,
 						userDeps.dependencies.split(" "));
+
+				await packageHelper
+					.generateApp(appDir);
+				
 				break;
 
 			case "component":
