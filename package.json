@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "await-exec": "^0.1.2",
+    "esformatter": "^0.10.0",
     "inquirer": "^6.2.2"
   }
 }
