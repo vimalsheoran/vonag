@@ -26,7 +26,11 @@ Install the node package
 
 ## Getting started
 
-All it does at the moment is generate a basic file structure for your service, which will look something like this,
+1. To setup basic application structure, use the following command
+
+`$ vonag make app <name of your api service>`
+
+Typing this command will give you a structure similar to the one below, it will also auto generate code for the following files `app.js`, `package.json`, `settings/modelHandler.js`, `settings/routeHandler.js`, `settings/modelConfig.js`
 
 ```
 --- yourApp
@@ -37,4 +41,17 @@ All it does at the moment is generate a basic file structure for your service, w
 	--- app.js
 	--- package.json
 ```
-You can achieve this by typing the following command in your 
+
+Now vonag structures it's application based on **components**. A **component** is a collection of ***controller***, ***routes*** and ***models***. a sample component would look something like this.
+
+```
+--- yourComponent
+	--- yourComponent.controller.js
+	--- yourComponent.routes.js
+	--- yourComponent.models.js
+```
+
+To generate a component, use the following command.
+
+`$ vonag make component <name of your component>`
+
